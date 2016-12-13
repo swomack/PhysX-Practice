@@ -71,5 +71,15 @@ int main()
 	gScene->addActor(*plane);
 
 
+	// create box at 10M height - Dynamic rigid body (actor)
+	PxTransform gBoxTransform(PxVec3(0.0f, 10.0f, 0.0f));
+	PxBoxGeometry gShapeGeom(0.5f, 0.5f, 0.5f);
+	PxRigidDynamic* box = PxCreateDynamic(*gPhysicsSDK, gBoxTransform, 
+											gShapeGeom, *gMaterial, 1.0);
+
+	// add box to the scene
+	gScene->addActor(*box);
+
+
 	return finish();
 }
