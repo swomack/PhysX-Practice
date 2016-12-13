@@ -4,6 +4,14 @@
 using namespace std;
 using namespace physx;
 
+PxReal gTimeStep = 1.0f / 60.0f;
+
+void stepPhysics(PxScene* scene)
+{
+	scene->simulate(gTimeStep);
+	scene->fetchResults(true);
+}
+
 int finish()
 {
 	getchar();
@@ -79,6 +87,24 @@ int main()
 
 	// add box to the scene
 	gScene->addActor(*box);
+
+
+	// simulate the scene
+	for (int i = 0; i < 300; i++)
+	{
+		stepPhysics(gScene);
+
+		// get position from world matrix
+		PxVec3 boxPos = box->getGlobalPose().p;
+		cout << "Box Position: " << "x:" << 
+			boxPos.x << " y:" << boxPos.y << " z:" << boxPos.z << endl;
+	}
+
+
+	// shut down physX
+	gScene->release();
+	gPhysicsSDK->release();
+	gFoundation->release();
 
 
 	return finish();
