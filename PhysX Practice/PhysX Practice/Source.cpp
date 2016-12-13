@@ -48,12 +48,27 @@ int main()
 
 	gScene = gPhysicsSDK->createScene(gSceneDesc);
 	
-
 	if (gScene == NULL)
 	{
 		cout << "Error creating physX Scene!" << endl;
 		return finish();
 	}
+
+	// Creating material for actor
+	// three parameters are satatic friction, dynamic frixtion and restitution(bounciness)
+	PxMaterial* gMaterial = gPhysicsSDK->createMaterial(0.5, 0.5, 0.5);
+
+
+	// Create Plane - static rigid body (actor)
+	// First position in the world then rotation as quaternion
+	PxTransform gPlaneTransform(PxVec3(0.0f, 0.0f, 0.0f),
+		PxQuat(PxHalfPi, PxVec3(0.0f, 0.0f, 1.0f)));
+
+	PxRigidStatic* plane = gPhysicsSDK->createRigidStatic(gPlaneTransform);
+	plane->createShape(PxPlaneGeometry(), *gMaterial);
+	
+	// add plane to the scene
+	gScene->addActor(*plane);
 
 
 	return finish();
